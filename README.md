@@ -4,15 +4,6 @@
 
 **RAG-GenAI-System** is a powerful, modular Retrieval-Augmented Generation (RAG) application. It empowers users to upload private documents (PDFs, TXT, DOCX) and engage in a natural, intelligent conversation with them. By leveraging the speed of Groq and the semantic precision of Google Gemini embeddings, this system ensures that the AI's responses are accurate, grounded in your provided documents, and free from hallucinations.
 
-### Why This Project?
-
-In a data-heavy environment, standard LLMs often struggle with private or specific documentation. This project bridges that gap by:
-
-* **Grounding AI in Fact:** The AI only answers questions based on the documents you upload.
-* **Intelligent Search:** Using cutting-edge embeddings to understand the *meaning* behind your questions, not just keyword matching.
-* **Production-Ready Architecture:** Decoupling the frontend (Streamlit) from the backend (FastAPI) to ensure professional, scalable, and manageable code.
-* **Total Control:** Features a user-friendly interface to index, manage, and delete documents from your knowledge base instantly.
-
 ### Tech Stack
 
 * **Frontend:** Streamlit – For rapid, interactive data-driven UI.
@@ -22,6 +13,20 @@ In a data-heavy environment, standard LLMs often struggle with private or specif
 * **Orchestration:** LangChain for building the retrieval pipeline.
 * **Vector Database:** FAISS – For efficient local similarity search.
 * **Deployment:** Render – Automated cloud hosting with CI/CD.
+
+![App Gif](https://github.com/pitalsmith/rag-genai-system/blob/54f16b60ca2e4536af3e9bcc7f024175a8beee93/docs/assets/Ai%20Assistant.gif)
+
+### [Visit the Live RAG AI App here](https://rag-genai-system-1.onrender.com)
+### Why This Project?
+
+In a data-heavy environment, standard LLMs often struggle with private or specific documentation. This project bridges that gap by:
+
+* **Grounding AI in Fact:** The AI only answers questions based on the documents you upload.
+* **Intelligent Search:** Using cutting-edge embeddings to understand the *meaning* behind your questions, not just keyword matching.
+* **Production-Ready Architecture:** Decoupling the frontend (Streamlit) from the backend (FastAPI) to ensure professional, scalable, and manageable code.
+* **Total Control:** Features a user-friendly interface to index, manage, and delete documents from your knowledge base instantly.
+
+
 
 ### How It Works
 
