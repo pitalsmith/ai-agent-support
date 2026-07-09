@@ -4,7 +4,6 @@ import pandas as pd
 import os
 
 # --- Configuration ---
-# Use the environment variable provided by Render, or default to localhost
 API_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
 
 # Page Configuration
@@ -13,15 +12,12 @@ st.set_page_config(layout="wide", page_title="AI Assistant")
 # --- Helper Function: Fetch from Backend ---
 def get_file_list():
     try:
-        # We now ask the backend for the list, not the local file system
         response = requests.get(f"{API_URL}/list-files")
         if response.status_code == 200:
-            data = response.json()
-            if data:
-                return pd.DataFrame(data)
+            return pd.DataFrame(response.json())
         return pd.DataFrame(columns=["FILE NAME", "SIZE", "ADDED"])
     except Exception as e:
-        st.error(f"Could not connect to backend to fetch files: {e}")
+        st.error(f"Backend connection error: {e}")
         return pd.DataFrame(columns=["FILE NAME", "SIZE", "ADDED"])
 
 # --- Sidebar ---
@@ -35,66 +31,60 @@ with st.sidebar:
     st.write("📂 Design System")
     st.write("📊 Marketing")
     st.markdown("---")
-    st.subheader("TAGS")
-    st.write("● Urgent")
-    st.write("● Reviewed")
-
-# --- Main Layout ---
-col1, col2 = st.columns([1, 2])
-
-with col1:
-    st.header("Upload Knowledge")
-    uploaded_file = st.file_uploader("Choose a file", type=["pdf", "txt", "docx"])
     
-    if uploaded_file is not None:
-        if st.button("Index File"):
-            files = {"file": (uploaded_file.name, uploaded_file)}
-            try:
-                response = requests.post(f"{API_URL}/upload", files=files)
-                if response.status_code == 200:
-                    st.success(f"Successfully indexed {uploaded_file.name}")
-                    st.rerun()
-                else:
-                    st.error(f"Failed! Status: {response.status_code}")
-            except Exception as e:
-                st.error(f"Connection Error: {e}")
-    
+    # Knowledge Base in Sidebar (Scrollable)
     st.subheader("Knowledge Base")
     df = get_file_list()
-    if not df.empty:
-        # --- TEMPORARILY REMOVE THE CUSTOM DIVS TO TEST ---
-        for index, row in df.iterrows():
-            col1, col2 = st.columns([0.8, 0.2])
-            col1.write(f"📄 {row['FILE NAME']}")
-            
-            # Test if the button works without the CSS container
-            if col2.button("🗑️", key=f"del_{index}"):
-                response = requests.delete(f"{API_URL}/delete-file/{row['FILE NAME']}")
-                if response.status_code == 200:
-                    st.rerun()
-    else:
-        st.info("No files indexed yet.")
-
-with col2:
-    st.header("AI Assistant")
     
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
+    # Native Streamlit Scrollable Container
+    with st.container(height=300, border=True):
+        if not df.empty:
+            for index, row in df.iterrows():
+                col1, col2 = st.columns([0.8, 0.2])
+                with col1:
+                    st.write(f"📄 {row['FILE NAME']}")
+                with col2:
+                    if st.button("🗑️", key=f"del_{row['FILE NAME']}"):
+                        requests.delete(f"{API_URL}/delete-file/{row['FILE NAME']}")
+                        st.rerun()
+        else:
+            st.info("No files indexed.")
 
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+# --- Main Layout ---
+st.header("AI Assistant")
 
-    if prompt := st.chat_input("Ask a question about your documents..."):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-        with st.chat_message("assistant"):
-            try:
-                response = requests.post(f"{API_URL}/ask", json={"question": prompt})
-                answer = response.json().get("answer", "Error: No response from backend.")
-                st.markdown(answer)
-                st.session_state.messages.append({"role": "assistant", "content": answer})
-            except Exception as e:
-                st.error(f"Could not connect to the backend at {API_URL}")
+# Display Chat
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# Chat Input
+if prompt := st.chat_input("Ask a question about your documents..."):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    with st.chat_message("assistant"):
+        try:
+            response = requests.post(f"{API_URL}/ask", json={"question": prompt})
+            answer = response.json().get("answer", "Error: No response from backend.")
+            st.markdown(answer)
+            st.session_state.messages.append({"role": "assistant", "content": answer})
+        except Exception as e:
+            st.error(f"Connection Error: {e}")
+
+# Upload Section (Main Area)
+with st.expander("Upload New Knowledge"):
+    uploaded_file = st.file_uploader("Choose a file", type=["pdf", "txt", "docx"])
+    if uploaded_file and st.button("Index File"):
+        files = {"file": (uploaded_file.name, uploaded_file)}
+        try:
+            response = requests.post(f"{API_URL}/upload", files=files)
+            if response.status_code == 200:
+                st.success(f"Indexed {uploaded_file.name}")
+                st.rerun()
+        except Exception as e:
+            st.error(f"Upload failed: {e}")
