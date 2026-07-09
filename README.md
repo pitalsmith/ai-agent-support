@@ -1,10 +1,10 @@
 # RAG-GenAI-System: Intelligent Document Assistant
 
-### 🚀 Overview
+### Overview
 
 **RAG-GenAI-System** is a powerful, modular Retrieval-Augmented Generation (RAG) application. It empowers users to upload private documents (PDFs, TXT, DOCX) and engage in a natural, intelligent conversation with them. By leveraging the speed of Groq and the semantic precision of Google Gemini embeddings, this system ensures that the AI's responses are accurate, grounded in your provided documents, and free from hallucinations.
 
-### 💡 Why This Project?
+### Why This Project?
 
 In a data-heavy environment, standard LLMs often struggle with private or specific documentation. This project bridges that gap by:
 
@@ -13,9 +13,9 @@ In a data-heavy environment, standard LLMs often struggle with private or specif
 * **Production-Ready Architecture:** Decoupling the frontend (Streamlit) from the backend (FastAPI) to ensure professional, scalable, and manageable code.
 * **Total Control:** Features a user-friendly interface to index, manage, and delete documents from your knowledge base instantly.
 
-### 🛠 Tech Stack
+### Tech Stack
 
-* **Frontend:**Streamlit – For rapid, interactive data-driven UI.
+* **Frontend:** Streamlit – For rapid, interactive data-driven UI.
 * **Backend:** FastAPI – For high-performance, asynchronous API operations.
 * **LLM (Generation):** Groq API (using Llama 3) for lightning-fast inference.
 * **Embeddings:** Google Gemini (`text-embedding-004`) for high-quality semantic understanding.
@@ -23,14 +23,14 @@ In a data-heavy environment, standard LLMs often struggle with private or specif
 * **Vector Database:** FAISS – For efficient local similarity search.
 * **Deployment:** Render – Automated cloud hosting with CI/CD.
 
-### ⚙️ How It Works
+### How It Works
 
 1. **Ingestion:** Files are uploaded and processed into manageable text chunks.
 2. **Vectorization:** Text chunks are transformed into vector embeddings using **Google Gemini**.
 3. **Storage:** Embeddings are saved into a **FAISS** vector index for lightning-fast similarity lookups.
 4. **Retrieval & Generation:** When a user asks a question, the system finds the most relevant document segments and sends them to **Groq/Llama 3**, which crafts a precise answer based solely on that context.
 
-### 🚀 How to Run Locally
+### How to Run Locally
 
 #### 1. Clone the Repository
 
@@ -76,7 +76,7 @@ streamlit run app.py
 
 ```
 
-### ☁️ Deployment Note
+### Deployment Note
 
 This project is configured for **Render**. When deploying, ensure you add the following Environment Variables to both your Backend and Frontend (where applicable) in the Render Dashboard:
 
@@ -84,7 +84,7 @@ This project is configured for **Render**. When deploying, ensure you add the fo
 * `GOOGLE_API_KEY`
 * `BACKEND_URL` (For the frontend, pointing to your live backend URL)
 
-### 📈 Future Enhancements
+### Future Enhancements
 
 * [ ] Add support for multi-user session management.
 * [ ] Integrate cloud-persistent storage for the FAISS index.
