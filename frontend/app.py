@@ -59,41 +59,48 @@ with col1:
             except Exception as e:
                 st.error(f"Connection Error: {e}")
     
-st.subheader("Knowledge Base")
-df = get_file_list()
-
-if not df.empty:
-    # Use a custom div to force a scrollable area if the content is too wide
+    st.subheader("Knowledge Base")
+    
+    # Custom CSS for the scrollable container
     st.markdown("""
-    <style>
-        .scrollable-kb {
-            max-height: 300px;
+        <style>
+        .scrollable-list {
+            height: 300px;
             overflow-y: auto;
-            border: 1px solid #ddd;
+            border: 1px solid #e0e0e0;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
         }
-    </style>
+        </style>
     """, unsafe_allow_html=True)
 
-    with st.container():
-        st.markdown('<div class="scrollable-kb">', unsafe_allow_html=True)
+    df = get_file_list()
+    
+    if not df.empty:
+        # Wrap the list in our scrollable CSS class
+        st.markdown('<div class="scrollable-list">', unsafe_allow_html=True)
+        
         for index, row in df.iterrows():
-            # Align items tightly to the left
-            col1, col2 = st.columns([0.8, 0.2])
+            # Create a layout: Name/Size taking up the left, Button on the right
+            cols = st.columns([0.85, 0.15])
             
-            with col1:
-                st.write(f"📄 {row['FILE NAME']} ({row['SIZE']})")
+            with cols[0]:
+                st.markdown(f"**{row['FILE NAME']}**<br><small>{row['SIZE']}</small>", unsafe_allow_html=True)
             
-            with col2:
+            with cols[1]:
+                # Unique key is essential for buttons inside loops
                 if st.button("🗑️", key=f"del_{row['FILE NAME']}"):
                     response = requests.delete(f"{API_URL}/delete-file/{row['FILE NAME']}")
                     if response.status_code == 200:
                         st.toast(f"Deleted {row['FILE NAME']}")
-                        st.rerun()
+                        st.rerun() # Refresh to update the list
+                    else:
+                        st.error("Error")
+        
         st.markdown('</div>', unsafe_allow_html=True)
-else:
-    st.info("No files indexed yet.")
+    else:
+        st.info("No files indexed yet.")
 
 with col2:
     st.header("AI Assistant")
