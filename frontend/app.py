@@ -60,47 +60,22 @@ with col1:
                 st.error(f"Connection Error: {e}")
     
     st.subheader("Knowledge Base")
-    
-    # Custom CSS for the scrollable container
-    st.markdown("""
-        <style>
-        .scrollable-list {
-            height: 300px;
-            overflow-y: auto;
-            border: 1px solid #e0e0e0;
-            padding: 10px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        </style>
-    """, unsafe_allow_html=True)
 
-    df = get_file_list()
-    
-    if not df.empty:
-        # Wrap the list in our scrollable CSS class
-        st.markdown('<div class="scrollable-list">', unsafe_allow_html=True)
+df = get_file_list()
+
+if not df.empty:
+    # --- TEMPORARILY REMOVE THE CUSTOM DIVS TO TEST ---
+    for index, row in df.iterrows():
+        col1, col2 = st.columns([0.8, 0.2])
+        col1.write(f"📄 {row['FILE NAME']}")
         
-        for index, row in df.iterrows():
-            # Create a layout: Name/Size taking up the left, Button on the right
-            cols = st.columns([0.85, 0.15])
-            
-            with cols[0]:
-                st.markdown(f"**{row['FILE NAME']}**<br><small>{row['SIZE']}</small>", unsafe_allow_html=True)
-            
-            with cols[1]:
-                # Unique key is essential for buttons inside loops
-                if st.button("🗑️", key=f"del_{row['FILE NAME']}"):
-                    response = requests.delete(f"{API_URL}/delete-file/{row['FILE NAME']}")
-                    if response.status_code == 200:
-                        st.toast(f"Deleted {row['FILE NAME']}")
-                        st.rerun() # Refresh to update the list
-                    else:
-                        st.error("Error")
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-    else:
-        st.info("No files indexed yet.")
+        # Test if the button works without the CSS container
+        if col2.button("🗑️", key=f"del_{index}"):
+            response = requests.delete(f"{API_URL}/delete-file/{row['FILE NAME']}")
+            if response.status_code == 200:
+                st.rerun()
+else:
+    st.info("No files indexed yet.")
 
 with col2:
     st.header("AI Assistant")
