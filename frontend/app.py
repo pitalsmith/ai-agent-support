@@ -63,20 +63,25 @@ st.subheader("Knowledge Base")
 df = get_file_list()
 
 if not df.empty:
-    for index, row in df.iterrows():
-        col_a, col_b = st.columns([3, 1])
-        col_a.write(f"{row['FILE NAME']} ({row['SIZE']})")
-        
-        if col_b.button("🗑️", key=row['FILE NAME']):
-            try:
-                response = requests.delete(f"{API_URL}/delete-file/{row['FILE NAME']}")
-                if response.status_code == 200:
-                    st.success(f"Deleted {row['FILE NAME']}")
-                    st.rerun() # Refresh the page to update the list
-                else:
-                    st.error("Delete failed.")
-            except Exception as e:
-                st.error(f"Error: {e}")
+    # Use a container to hold the list
+    with st.container():
+        for index, row in df.iterrows():
+            # Use three columns: Name, Date/Size, and Delete Button
+            c1, c2, c3 = st.columns([0.6, 0.3, 0.1])
+            
+            c1.write(f"📄 **{row['FILE NAME']}**")
+            c2.caption(f"{row['SIZE']} • {row['ADDED']}")
+            
+            if c3.button("🗑️", key=f"del_{row['FILE NAME']}"):
+                try:
+                    response = requests.delete(f"{API_URL}/delete-file/{row['FILE NAME']}")
+                    if response.status_code == 200:
+                        st.toast(f"Deleted {row['FILE NAME']}")
+                        st.rerun() 
+                    else:
+                        st.error("Delete failed.")
+                except Exception as e:
+                    st.error(f"Error: {e}")
 else:
     st.info("No files indexed yet.")
 
