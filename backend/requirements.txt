@@ -1,1 +1,10 @@
-pip freeze > requirements.txt
+fastapi
+uvicorn
+python-dotenv
+langchain-groq
+langchain-community
+langchain-google-genai
+langchain-classic
+faiss-cpu
+pydantic
+# ... any other libraries you import in main.py

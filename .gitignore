@@ -4,6 +4,7 @@ __pycache__/
 venv/
 .env
 
+
 # Node
 node_modules/
 .next/
@@ -13,3 +14,6 @@ dist/
 # Docker/Infrastructure
 *.tfstate
 *.tfstate.backup
+
+# System files
+.DS_Store
