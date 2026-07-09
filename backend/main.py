@@ -98,3 +98,20 @@ async def upload_file(file: UploadFile = File(...)):
 async def ask_question(request: QueryRequest):
     answer = ask_ai(request.question)
     return {"answer": answer}
+
+@app.delete("/delete-file/{filename}")
+async def delete_file(filename: str):
+    file_path = os.path.join(UPLOAD_DIR, filename)
+    
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        
+        # After deleting, you should ideally rebuild the index 
+        # or clear it. For simplicity, we'll just delete the FAISS index
+        # so the user can start fresh.
+        if os.path.exists(INDEX_PATH):
+            shutil.rmtree(INDEX_PATH)
+            
+        return {"message": f"Deleted {filename} and cleared index."}
+    else:
+        raise HTTPException(status_code=404, detail="File not found")

@@ -59,12 +59,26 @@ with col1:
             except Exception as e:
                 st.error(f"Connection Error: {e}")
     
-    st.subheader("Knowledge Base")
-    df = get_file_list()
-    if not df.empty:
-        st.dataframe(df, use_container_width=True)
-    else:
-        st.info("No files indexed yet.")
+st.subheader("Knowledge Base")
+df = get_file_list()
+
+if not df.empty:
+    for index, row in df.iterrows():
+        col_a, col_b = st.columns([3, 1])
+        col_a.write(f"{row['FILE NAME']} ({row['SIZE']})")
+        
+        if col_b.button("🗑️", key=row['FILE NAME']):
+            try:
+                response = requests.delete(f"{API_URL}/delete-file/{row['FILE NAME']}")
+                if response.status_code == 200:
+                    st.success(f"Deleted {row['FILE NAME']}")
+                    st.rerun() # Refresh the page to update the list
+                else:
+                    st.error("Delete failed.")
+            except Exception as e:
+                st.error(f"Error: {e}")
+else:
+    st.info("No files indexed yet.")
 
 with col2:
     st.header("AI Assistant")
