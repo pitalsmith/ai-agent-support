@@ -1,86 +1,77 @@
-# RAG-GenAI-System: Intelligent Document Assistant
+# AI Agent Support Assistant
 
-### Overview
+An intelligent AI agent that can answer questions from uploaded policy documents while also triggering structured actions such as checking or updating order status. It is designed as a foundation for future agent capabilities like password changes, receipt printing, and other business workflows.
 
-**RAG-GenAI-System** is a powerful, modular Retrieval-Augmented Generation (RAG) application. It empowers users to upload private documents (PDFs, TXT, DOCX) and engage in a natural, intelligent conversation with them. By leveraging the speed of Groq and the semantic precision of Google Gemini embeddings, this system ensures that the AI's responses are accurate, grounded in your provided documents, and free from hallucinations.
+## Why this project matters
 
-### Tech Stack
+This project shows how AI agents can move beyond simple chat and become practical assistants for real support operations. Instead of only generating text, the agent can combine retrieval over company knowledge with tool-based actions to help users complete tasks. That makes it valuable for:
 
-* **Frontend:** Streamlit – For rapid, interactive data-driven UI.
-* **Backend:** FastAPI – For high-performance, asynchronous API operations.
-* **LLM (Generation):** Groq API (using Llama 3) for lightning-fast inference.
-* **Embeddings:** Google Gemini (`text-embedding-004`) for high-quality semantic understanding.
-* **Orchestration:** LangChain for building the retrieval pipeline.
-* **Vector Database:** FAISS – For efficient local similarity search.
-* **Deployment:** Render – Automated cloud hosting with CI/CD.
+- faster policy and document lookup
+- grounded answers powered by retrieval-augmented generation (RAG)
+- action-oriented support workflows
+- a foundation for future API-driven automations and internal tools
 
-![App Gif](https://github.com/pitalsmith/rag-genai-system/blob/54f16b60ca2e4536af3e9bcc7f024175a8beee93/docs/assets/Ai%20Assistant.gif)
+## What the project does
 
-### [Visit the Live RAG AI App here](https://rag-genai-system-1.onrender.com)
-### Why This Project?
+- uploads and indexes policy documents such as PDFs and text files
+- answers questions using a retrieval-augmented generation flow
+- acts as an AI agent that can reason over requests and trigger relevant actions
+- supports order-related workflows such as checking or updating order status
+- provides a simple Streamlit-based interface for chat, file management, and workspace visibility
 
-In a data-heavy environment, standard LLMs often struggle with private or specific documentation. This project bridges that gap by:
+## Tech stack
 
-* **Grounding AI in Fact:** The AI only answers questions based on the documents you upload.
-* **Intelligent Search:** Using cutting-edge embeddings to understand the *meaning* behind your questions, not just keyword matching.
-* **Production-Ready Architecture:** Decoupling the frontend (Streamlit) from the backend (FastAPI) to ensure professional, scalable, and manageable code.
-* **Total Control:** Features a user-friendly interface to index, manage, and delete documents from your knowledge base instantly.
+- Frontend: Streamlit
+- Backend: FastAPI
+- AI orchestration: LangChain and LangGraph
+- LLM: Groq (Llama model)
+- Embeddings: Google Gemini
+- Vector search: FAISS
+- Data source: local JSON-based order database
 
+## How I built it
 
+1. Built a FastAPI backend with endpoints for chat, file upload, file listing, and order retrieval.
+2. Processed uploaded documents into chunks, generated embeddings, and stored them in a FAISS index for semantic search.
+3. Connected the LLM to a retrieval pipeline so responses are grounded in the uploaded knowledge base.
+4. Added agent-style tool calling so the system can route requests toward structured actions such as order lookups and updates.
+5. Designed a Streamlit frontend with a chat experience, sidebar workspace view, and knowledge-base file list.
 
-### How It Works
+## Project impact
 
-1. **Ingestion:** Files are uploaded and processed into manageable text chunks.
-2. **Vectorization:** Text chunks are transformed into vector embeddings using **Google Gemini**.
-3. **Storage:** Embeddings are saved into a **FAISS** vector index for lightning-fast similarity lookups.
-4. **Retrieval & Generation:** When a user asks a question, the system finds the most relevant document segments and sends them to **Groq/Llama 3**, which crafts a precise answer based solely on that context.
+This project highlights an AI agent architecture that combines knowledge retrieval with action execution. It is a strong example of how an assistant can support both information lookup and workflow automation, with RAG as one of its key capabilities rather than the only focus.
 
-📸 Screenshots
+## Screenshots
 
-1. Chat Interface & Knowledge Base Management
-A sleek, intuitive chat interface where the AI answers questions grounded in your uploaded documents. The sidebar provides full control over your knowledge base, allowing you to index new files and delete old ones with ease.
-![AI Assistant Overview](https://github.com/pitalsmith/rag-genai-system/blob/b9be3422c14ef6ed02dec6bd7a2d88396c6c78f7/docs/assets/S1.JPG)
+### Chat experience and knowledge base view
 
-3. Document Upload & File Management
-Easily upload new PDFs, TXT, or DOCX files. The scrollable knowledge base in the sidebar keeps your workspace organized, ensuring your documents are always indexed and ready for retrieval.
-![AI Assistant Overview](https://github.com/pitalsmith/rag-genai-system/blob/b9be3422c14ef6ed02dec6bd7a2d88396c6c78f7/docs/assets/S2.JPG)
+![AI assistant interface](docs/assets/S1.JPG)
 
-### How to Run Locally
+### File upload and sidebar organization
 
-#### 1. Clone the Repository
+![Knowledge base management](docs/assets/S2.JPG)
+
+## Demo
+
+![App preview](docs/assets/Ai%20Assistant.gif)
+
+## Getting started
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/rag-genai-system.git
-cd rag-genai-system
-
+git clone https://github.com/pitalsmith/ai-agent-support.git
+cd ai-agent-support
 ```
 
-#### 2. Configure Backend
+Backend:
 
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate
 pip install -r requirements.txt
-
 ```
 
-Create a `.env` file in the `backend/` folder with your API keys:
-
-```text
-GROQ_API_KEY=your_groq_api_key_here
-GOOGLE_API_KEY=your_google_gemini_api_key_here
-
-```
-
-Run the server:
-
-```bash
-uvicorn main:app --reload
-
-```
-
-#### 3. Configure Frontend
+Frontend:
 
 ```bash
 cd ../frontend
@@ -88,23 +79,7 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 streamlit run app.py
-
 ```
 
-### Deployment Note
+Make sure to add your API keys in the backend environment before running the app.
 
-This project is configured for **Render**. When deploying, ensure you add the following Environment Variables to both your Backend and Frontend (where applicable) in the Render Dashboard:
-
-* `GROQ_API_KEY`
-* `GOOGLE_API_KEY`
-* `BACKEND_URL` (For the frontend, pointing to your live backend URL)
-
-### Future Enhancements
-
-* [ ] Add support for multi-user session management.
-* [ ] Integrate cloud-persistent storage for the FAISS index.
-* [ ] Implement source-citation highlighting for better transparency in AI answers.
-
----
-
-*Created by Peter Atunde*
