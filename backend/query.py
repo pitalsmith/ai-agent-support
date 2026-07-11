@@ -15,7 +15,7 @@ load_dotenv()
 # 1. Embeddings remain Google (to match your ./faiss_index)
 embeddings = GoogleGenerativeAIEmbeddings(
     model="gemini-embedding-001", # You can also try "gemini-embedding-2"
-    google_api_key=os.getenv("GOOGLE_API_KEY")
+    google_api_key=os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
 )
 # 2. Switch LLM to Groq
 llm = ChatGroq(

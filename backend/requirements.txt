@@ -9,4 +9,5 @@ faiss-cpu
 pydantic
 python-multipart
 pypdf
+pip freeze > requirements.txt
 # ... any other libraries you import in main.py
