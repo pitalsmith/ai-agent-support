@@ -41,6 +41,10 @@ This project shows how AI agents can move beyond simple chat and become practica
 
 This project highlights an AI agent architecture that combines knowledge retrieval with action execution. It is a strong example of how an assistant can support both information lookup and workflow automation, with RAG as one of its key capabilities rather than the only focus.
 
+## Demo
+
+![App preview](https://github.com/pitalsmith/ai-agent-support/blob/75d7a8d209af63424c4e69dc10c45f0843b7efa8/docs/assets/Comp%2012.gif)
+
 ## Screenshots
 
 ### Chat experience and knowledge base view
@@ -51,9 +55,7 @@ This project highlights an AI agent architecture that combines knowledge retriev
 
 ![Knowledge base management](docs/assets/S2.JPG)
 
-## Demo
 
-![App preview](https://github.com/pitalsmith/ai-agent-support/blob/75d7a8d209af63424c4e69dc10c45f0843b7efa8/docs/assets/Comp%2012.gif)
 
 ## Getting started
 
