@@ -7,6 +7,7 @@ langchain-community
 langchain-google-genai
 langchain-classic
 langchain-text-splitters
+langgraph
 faiss-cpu
 pydantic
 python-multipart
