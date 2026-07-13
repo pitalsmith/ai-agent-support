@@ -14,6 +14,7 @@ load_dotenv(env_path)
 
 INDEX_PATH = "faiss_index"
 
+
 def get_google_api_key():
     return os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
 
@@ -27,10 +28,12 @@ def get_google_embeddings(model="gemini-embedding-2"):
     return GoogleGenerativeAIEmbeddings(model=model, google_api_key=api_key)
 
 
-embeddings = get_google_embeddings()
-
 def ask_ai(question):
-    
+    try:
+        embeddings = get_google_embeddings()
+    except EnvironmentError as exc:
+        return str(exc)
+
     # Load the vectorstore
     vectorstore = FAISS.load_local(INDEX_PATH, embeddings, allow_dangerous_deserialization=True)
     llm = ChatGroq(model="llama-3.1-8b-instant")

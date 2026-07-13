@@ -64,7 +64,13 @@ app.add_middleware(
 INDEX_PATH = "faiss_index"
 UPLOAD_DIR = "temp_files"
 ORDERS_FILE = Path(__file__).resolve().parents[1] / "orders.json"
-embeddings = get_google_embeddings(model="gemini-embedding-2-preview")
+
+
+def get_embeddings():
+    try:
+        return get_google_embeddings(model="gemini-embedding-2-preview")
+    except EnvironmentError:
+        return None
 
 class QueryRequest(BaseModel):
     question: str
@@ -87,6 +93,9 @@ def process_and_index_file(file_path):
     vectorstore.save_local(INDEX_PATH)
 
 def ask_ai(question: str):
+    embeddings = get_embeddings()
+    if not embeddings:
+        return "GOOGLE_API_KEY or GEMINI_API_KEY must be set for Gemini embeddings."
     if not os.path.exists(INDEX_PATH):
         return "Knowledge base is empty. Please upload files first."
     vectorstore = FAISS.load_local(INDEX_PATH, embeddings, allow_dangerous_deserialization=True)
