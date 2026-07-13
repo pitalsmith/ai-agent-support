@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: ai-agent-support-backend
+    env: python
+    branch: main
+    root: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app.main:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+
+  - type: web
+    name: ai-agent-support-frontend
+    env: python
+    branch: main
+    root: frontend
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0

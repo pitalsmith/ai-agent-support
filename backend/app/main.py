@@ -51,10 +51,11 @@ class ChatRequest(BaseModel):
     message: str
 
 # --- CORS Middleware ---
-# Replace the URL with your final Render frontend URL once deployed
+# Allow frontend access during Render deployment.
+# For greater security, replace ['*'] with your deployed frontend URL.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:8501"],
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
