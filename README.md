@@ -43,7 +43,7 @@ This project highlights an AI agent architecture that combines knowledge retriev
 
 ## Demo
 
-![App preview](https://github.com/pitalsmith/ai-agent-support/blob/75d7a8d209af63424c4e69dc10c45f0843b7efa8/docs/assets/Comp%2012.gif)
+![App preview](https://github.com/pitalsmith/ai-agent-support/blob/c0b8ad20f4b45d424d5be52de37a1dfde2de2058/docs/assets/Ai%20Assistant%20-%20Opera%202026-07-13%2014-39-54.gif)
 
 ## Screenshots
 
