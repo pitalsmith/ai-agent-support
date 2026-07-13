@@ -41,9 +41,11 @@ This project shows how AI agents can move beyond simple chat and become practica
 
 This project highlights an AI agent architecture that combines knowledge retrieval with action execution. It is a strong example of how an assistant can support both information lookup and workflow automation, with RAG as one of its key capabilities rather than the only focus.
 
-## Demo
+## Live Preview
 
 ![App preview](https://github.com/pitalsmith/ai-agent-support/blob/c0b8ad20f4b45d424d5be52de37a1dfde2de2058/docs/assets/Ai%20Assistant%20-%20Opera%202026-07-13%2014-39-54.gif)
+
+### [Visit the Live RAG AI App here](https://ai-agent-support-2.onrender.com)
 
 ## Screenshots
 
