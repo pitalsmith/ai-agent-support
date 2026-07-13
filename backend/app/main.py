@@ -48,7 +48,10 @@ def extract_title_from_answer(answer: str) -> str | None:
 app = FastAPI(title="AI Agent Support API")
 
 class ChatRequest(BaseModel):
-    message: str
+    user_query: str
+
+class ChatResponse(BaseModel):
+    response: str
 
 # --- CORS Middleware ---
 # Allow frontend access during Render deployment.
@@ -109,15 +112,13 @@ def ask_ai(question: str):
     return result["result"]
 
 # --- Endpoints ---
-@app.post("/chat")
-async def chat_endpoint(request: Request):
+@app.post("/chat", response_model=ChatResponse)
+async def chat_endpoint(request: ChatRequest):
     try:
-        # 1. Safely get the request data
-        data = await request.json()
-        user_message = data.get("user_query")
+        user_message = request.user_query
         
         if not user_message:
-            return JSONResponse(status_code=400, content={"response": "Error: No message content provided."})
+            raise HTTPException(status_code=400, detail="Error: No message content provided.")
 
         print(f"DEBUG: Processing message: {user_message}")
 
@@ -177,11 +178,12 @@ async def chat_endpoint(request: Request):
         else:
             return {"response": "The agent did not return a valid response."}
 
+    except HTTPException:
+        raise
     except Exception as e:
         # 5. Log the error to your terminal so you can fix it
         print(f"CRITICAL ERROR in /chat: {str(e)}")
-        # Return the error to the frontend so you can see it in the UI
-        return {"response": f"Backend Error: {str(e)}"}
+        raise HTTPException(status_code=500, detail=f"Backend Error: {str(e)}")
 
 
 @app.get("/orders")
