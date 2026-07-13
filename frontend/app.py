@@ -2,11 +2,8 @@ import streamlit as st
 import requests
 import os
 
-import faulthandler
-faulthandler.enable()
-
 # --- Configuration ---
-API_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
+API_URL = os.getenv("BACKEND_URL", "https://ai-agent-support-1.onrender.com")
 
 # Page Configuration
 st.set_page_config(layout="wide", page_title="AI Assistant")
