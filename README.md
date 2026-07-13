@@ -53,7 +53,7 @@ This project highlights an AI agent architecture that combines knowledge retriev
 
 ## Demo
 
-![App preview](https://github.com/pitalsmith/ai-agent-support/blob/0fa41ffdc92b339e2016e2f2432b11609db42977/docs/assets/ai-assistant-google-chrome-2026-07-11-16-49-14_RDEnkE2c.gif)
+![App preview](https://github.com/pitalsmith/ai-agent-support/blob/75d7a8d209af63424c4e69dc10c45f0843b7efa8/docs/assets/Comp%2012.gif)
 
 ## Getting started
 
